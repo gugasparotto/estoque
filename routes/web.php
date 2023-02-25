@@ -24,3 +24,4 @@ Route::get('/products/create', [ProductController::class, 'create']);
 
 Route::post('/products', [ProductController::class, 'store']);
 
+Route::get('/products/delete/{id}', [ProductController::class, 'delete']);
