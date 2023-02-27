@@ -17,6 +17,27 @@
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="/products">Produtos</a>
                         </li>
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/dashboard">Dashboard</a>
+                            </li> 
+                            <li class="nav-item">
+                                <form action="/logout" method="POST">
+                                    @csrf 
+                                    <a href="/logout" class="nav-link" onclick="event.preventDefalut(); this.closest('form').submit();">
+                                        Sair
+                                    </a>                                 
+                                </form>
+                            </li> 
+                        @endauth
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/register">Criar conta</a>
+                            </li>
+                        @endguest
                     </ul>
                 </div>
             </div>

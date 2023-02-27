@@ -25,11 +25,13 @@ class ProductController extends Controller
         $name= $request -> input('name');
         $sku= $request -> input('sku');
         $quantity = $request->input('quantity');
+        $user = auth()->user();
         $product = new Product();
         $product -> sku = $sku;
         $product -> name = $name;
         $product -> quantity = $quantity;
         $product -> created_by = "system";
+        $product->user_id = $user->id;
         $product->save();
         return redirect('/products')->with('success', 'Produto cadastrado com sucesso');
         } catch (\Illuminate\Database\QueryException $ex){
@@ -37,7 +39,7 @@ class ProductController extends Controller
             if ($ex->errorInfo[1] == 1062) {
                 return back()->with('error', 'O SKU já está sendo usado. Por favor, escolha outro.');
             } else {
-                return redirect('/products')->with('error', 'Ocorreu um erro ao criar o produto. Por favor, tente novamente.');
+                return redirect('/products')->with('error', QueryException::class);
             }
         }
     }

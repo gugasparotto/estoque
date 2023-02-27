@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,7 +21,7 @@ Route::get('/', function () {
 
 Route::get('/products', [ProductController::class, 'index']);
 
-Route::get('/products/create', [ProductController::class, 'create']);
+Route::get('/products/create', [ProductController::class, 'create'])->middleware('auth');
 
 Route::post('/products', [ProductController::class, 'store']);
 
@@ -29,6 +30,14 @@ Route::get('/products/delete/{id}', [ProductController::class, 'delete']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 
 Route::get('/products/edit/{id}', [ProductController::class, 'edit']);
+
+Route::get('logout', function ()
+{
+    auth()->logout();
+    Session()->flush();
+
+    return redirect('/');
+})->name('logout');
 
 Route::middleware([
     'auth:sanctum',
