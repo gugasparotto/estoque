@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index(){
 
-        $products = Product::orderBy('name', 'asc')->paginate(5);
+        $products = Product::orderBy('name', 'asc')->paginate(10);
         return view('products.index', ['products' => $products]);
     }
 
@@ -47,6 +47,20 @@ class ProductController extends Controller
         $product=new Product();
         $product->destroy($id);
         return redirect('/products');
+       
+    }
+
+    public function show($id)
+    {
+        $product= Product::findOrFail($id);
+        return view('products.show', ['product' => $product]);
+       
+    }
+
+    public function edit($id)
+    {
+        $product= Product::findOrFail($id);
+        return view('products.edit', ['product' => $product]);
        
     }
 }

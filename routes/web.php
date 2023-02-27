@@ -25,3 +25,17 @@ Route::get('/products/create', [ProductController::class, 'create']);
 Route::post('/products', [ProductController::class, 'store']);
 
 Route::get('/products/delete/{id}', [ProductController::class, 'delete']);
+
+Route::get('/products/{id}', [ProductController::class, 'show']);
+
+Route::get('/products/edit/{id}', [ProductController::class, 'edit']);
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});

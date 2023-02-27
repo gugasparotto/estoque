@@ -18,13 +18,47 @@
             <strong>Erro!</strong> {{ session('error') }}
         </div>
     @endif
-    <ul class="list-group">
-        @foreach ($products as $product)
-        <li class="list-group-item">{{$product->name}} - sku:{{$product->sku}} <a href="/products/delete/{{$product->id}}" class="btn btn-warning">deletar</a> </li>
-        @endforeach    
-    </ul>
+
+    <table class="table table-dark">
+        <thead>
+            <th scope="col">Id</th>
+            <th scope="col">Nome</th>
+            <th scope="col">SKU</th>
+            <th scope="col">Quantidade</th>
+            <th></th>
+            <th></th>
+            
+        </thead>
+        <tbody>
+            @foreach ($products as $product)
+            <tr>
+                <th scope="row">{{$product->id}}</th>
+                <td><a href="/products/{{$product->id}}" class="text-decoration-none" >{{$product->name}}</a></td>
+                <td>{{$product->sku}}</td>
+                <td>{{$product->quantity}}</td>
+                <td class="text-right" style="width: 80px">
+                    <a class="btn btn-info-crud-up btn-xs" href="/products/edit/{{$product->id}}"  style="color:rgb(246, 240, 240); padding: 2px">
+                        Editar
+                    </a>
+                </td>
+                <td class="text-right" style="width: 80px">
+                    <a class="btn btn-warning" href="/products/delete/{{$product->id}}" style="color:rgb(0, 0, 0); padding: 2px">
+                        excluir
+                    </a>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+
+
+
+
     <div class="d-flex justify-content-center">
         {{ $products->links()}}
     </div>
     
 </x-layout>
+
+
