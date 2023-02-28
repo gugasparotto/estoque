@@ -15,21 +15,25 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+/* Route::get('/', function () {
+    return view('index')->middleware('auth');
+}); */
 
-Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products', [ProductController::class, 'index'])->middleware('auth');
 
 Route::get('/products/create', [ProductController::class, 'create'])->middleware('auth');
 
-Route::post('/products', [ProductController::class, 'store']);
+Route::post('/products', [ProductController::class, 'store'])->middleware('auth');
 
-Route::get('/products/delete/{id}', [ProductController::class, 'delete']);
+Route::get('/products/delete/{id}', [ProductController::class, 'delete'])->middleware('auth');
 
-Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::get('/products/{id}', [ProductController::class, 'show'])->middleware('auth');
 
-Route::get('/products/edit/{id}', [ProductController::class, 'edit']);
+Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->middleware('auth');
+
+Route::put('/products/update/{id}', [ProductController::class, 'update'])->middleware('auth');
+
+Route::get('/dashboard', [ProductController::class, 'dashboard'])->middleware('auth');
 
 Route::get('logout', function ()
 {
@@ -44,7 +48,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/', function () {
+        return view('index');
+    })->name('index');
 });

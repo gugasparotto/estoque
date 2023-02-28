@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Database\QueryException;
+use App\Models\User;
 
 
 class ProductController extends Controller
@@ -48,14 +49,15 @@ class ProductController extends Controller
     {
         $product=new Product();
         $product->destroy($id);
-        return redirect('/products');
+        return redirect('/products')->with('success', 'Produto excluído com sucesso');
        
     }
 
     public function show($id)
     {
         $product= Product::findOrFail($id);
-        return view('products.show', ['product' => $product]);
+        $productOwner = User::where('id', $product->user_id)->first()->toArray();     
+        return view('products.show', ['product' => $product, 'productOwner' => $productOwner]);
        
     }
 
@@ -64,5 +66,20 @@ class ProductController extends Controller
         $product= Product::findOrFail($id);
         return view('products.edit', ['product' => $product]);
        
+    }
+
+    public function update(Request $request)
+    {
+        Product::findOrFail($request->id)->update($request->all());
+        return redirect('/products')->with('success', 'Produto editado com sucesso');
+       
+    }
+
+    public function dashboard()
+    {
+        $user = auth()->user();
+        $products = $user->products;
+
+        return view('products.dashboard', ['products' => $products]);
     }
 }

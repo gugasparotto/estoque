@@ -1,3 +1,5 @@
-<x-layout title="olá">
-    
+<x-layout title="Seja bem vindo">
+    @guest
+            
+    @endguest
 </x-layout>
