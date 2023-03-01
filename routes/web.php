@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\ProductMovementController;
+use App\Models\ProductMovement;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,8 @@ Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->middlewar
 Route::put('/products/update/{id}', [ProductController::class, 'update'])->middleware('auth');
 
 Route::get('/dashboard', [ProductController::class, 'dashboard'])->middleware('auth');
+
+Route::post('/products/add/{id}',[ProductController::class, 'addProduct'])->middleware('auth');
 
 Route::get('logout', function ()
 {

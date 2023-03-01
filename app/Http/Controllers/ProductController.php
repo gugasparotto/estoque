@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductMovement;
 use Illuminate\Database\QueryException;
 use App\Models\User;
 
@@ -11,7 +12,9 @@ class ProductController extends Controller
 {
     public function index(){
 
-        $products = Product::orderBy('name', 'asc')->paginate(10);
+        $user = auth()->user()->id;
+
+        $products = Product::where('user_id', $user)->get();
         return view('products.index', ['products' => $products]);
     }
 
@@ -81,5 +84,21 @@ class ProductController extends Controller
         $products = $user->products;
 
         return view('products.dashboard', ['products' => $products]);
+    }
+
+    public function addProduct(Request $request, $id)
+    {
+        $product= Product::findOrFail($id);
+        $product->addQuantidade($request->quantity);
+        $product->save();
+
+        $movedProduct = new ProductMovement();
+        $movedProduct->quantity = $request->quantity;
+        $movedProduct->user_id = $request->user_id;
+        $movedProduct->origin = 'system';
+        $movedProduct->product_id = $id;
+        $movedProduct->type = 'adicionado';
+        $movedProduct->save();
+        return redirect('/products');
     }
 }

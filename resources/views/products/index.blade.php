@@ -50,10 +50,11 @@
             @endforeach
         </tbody>
     </table>
+    {{-- @if(count($products) > 0)
     <div class="d-flex justify-content-center">
         {{ $products->links()}}
     </div>
-    
+    @endif --}}
 </x-layout>
 
 

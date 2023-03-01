@@ -43,6 +43,7 @@
                     {{ __('Log in') }}
                 </x-button>
             </div>
+            <a href="/register" class="btn btn-dark" >Criar conta</a>
         </form>
     </x-authentication-card>
 </x-guest-layout>
