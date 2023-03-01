@@ -88,17 +88,22 @@ class ProductController extends Controller
 
     public function addProduct(Request $request, $id)
     {
+        if($request->quantity<0){
+            return back()->with('error', 'quantidade precisa ser positiva');
+        }
         $product= Product::findOrFail($id);
         $product->addQuantidade($request->quantity);
         $product->save();
 
         $movedProduct = new ProductMovement();
         $movedProduct->quantity = $request->quantity;
-        $movedProduct->user_id = $request->user_id;
+        $movedProduct->user_id = $product->user_id;
         $movedProduct->origin = 'system';
         $movedProduct->product_id = $id;
         $movedProduct->type = 'adicionado';
         $movedProduct->save();
-        return redirect('/products');
+        return back()->with('success', 'Quantidade adicionada com sucesso');
     }
+
+    
 }
