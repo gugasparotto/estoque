@@ -6,6 +6,9 @@ use App\Models\Product;
 use App\Models\ProductMovement;
 use Illuminate\Database\QueryException;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
+
 
 
 class ProductController extends Controller
@@ -80,10 +83,22 @@ class ProductController extends Controller
 
     public function dashboard()
     {
+        if(request('data_inicio')){
+        $from = request('data_inicio');
+        $to = request('data_fim');
+        }
+        else {   
+            $to = Carbon::now();         
+            $from = $to->clone()->subDays(30);
+        }
         $user = auth()->user();
-        $products = $user->products;
-
-        return view('products.dashboard', ['products' => $products]);
+        $moved = DB::table('product_movements')
+                ->join('products', 'product_movements.product_id', '=', 'products.id')
+                ->select('product_movements.*', 'products.name as product_name')
+                ->where('products.user_id', $user->id)
+                ->whereBetween('product_movements.created_at', [$from, $to])
+                ->get();
+        return view('products.dashboard')->with('moved', $moved);
     }
 
     public function addProduct(Request $request, $id)
